@@ -21,6 +21,18 @@ function dibujarTodo() {
   limpiarCanvas();
   //dibujarTablero();
   dibujarTablero2();
+  pintarParte(5, 1);
+  pintarParte(0, 3);
+  pintarParte(5, 5);
+  pintarParte(10, 2);
+  //Pintar un cuadrado pegado al borde inferior del canvas.
+  pintarParte((canvas.width - TAMANIO_CELDA) / TAMANIO_CELDA, (canvas.height - TAMANIO_CELDA) / TAMANIO_CELDA);
+  //Pintar un cuadrado pegado al borde derecho del canvas.
+  pintarParte((canvas.height - TAMANIO_CELDA) / TAMANIO_CELDA, (canvas.width / 2) / TAMANIO_CELDA);
+  //Pintar un cuadrado pegado al borde izquierdo del canvas.
+  pintarParte((canvas.height / 2) / TAMANIO_CELDA - (canvas.height / 2) / TAMANIO_CELDA, (canvas.width / 2) / TAMANIO_CELDA);
+  //Pintar un cuadrado en cualquier esquina del canvas.
+  pintarParte(canvas.width - canvas.width, (canvas.height - TAMANIO_CELDA) / TAMANIO_CELDA);
 }
 
 function dibujarTablero() {
@@ -52,6 +64,7 @@ function dibujarTablero() {
 }
 
 function dibujarTablero2() {
+  //verticales
   for (let i = 0; i < canvas.width; i += TAMANIO_CELDA) {
     ctx.strokeStyle = "white";
     ctx.beginPath();
@@ -59,6 +72,7 @@ function dibujarTablero2() {
     ctx.lineTo(i, canvas.height);
     ctx.stroke();
   }
+  //horizontales
   for (let i = 0; i < canvas.height; i += TAMANIO_CELDA) {
     ctx.strokeStyle = "white";
     ctx.beginPath();//Empeiza a dibujar en el canva
@@ -66,6 +80,15 @@ function dibujarTablero2() {
     ctx.lineTo(canvas.width, i);//Hasta donde dibujar
     ctx.stroke();
   }
+}
+
+function pintarParte(lineaX, lineaY) {
+  let valorX = lineaX * TAMANIO_CELDA;
+  let valorY = lineaY * TAMANIO_CELDA;
+  ctx.fillStyle = "red";
+  ctx.fillRect(valorX, valorY, TAMANIO_CELDA, TAMANIO_CELDA);
+  ctx.strokeStyle = "yellow";
+  ctx.strokeRect(valorX, valorY, TAMANIO_CELDA, TAMANIO_CELDA);
 }
 
 
