@@ -3,7 +3,25 @@
 const canvas = document.getElementById("canvasJuego");
 const ctx = canvas.getContext("2d");
 const TAMANIO_CELDA = 25;
+//CREACIÓN DE LA SERPIENTE
+const SERPIENTE = [
+  // { x: (canvas.width / 2) / TAMANIO_CELDA, y: (canvas.height / 2) / TAMANIO_CELDA },
+  // { x: (canvas.width / 2) / TAMANIO_CELDA, y: (canvas.height / 2) / TAMANIO_CELDA - 1 },
+  // { x: ((canvas.width / 2) / TAMANIO_CELDA) - 1, y: (canvas.height / 2) / TAMANIO_CELDA - 1 },
+  // { x: ((canvas.width / 2) / TAMANIO_CELDA) - 2, y: (canvas.height / 2) / TAMANIO_CELDA - 1 },
+  //Una serpiente de 5 cuadros subiendo pegada al borde izquierdo.
+  // { x: (canvas.width / 2) / TAMANIO_CELDA - (canvas.width / 2) / TAMANIO_CELDA, y: (canvas.height / 2) / TAMANIO_CELDA - 5 },
+  // { x: (canvas.width / 2) / TAMANIO_CELDA - (canvas.width / 2) / TAMANIO_CELDA, y: (canvas.height / 2) / TAMANIO_CELDA - 4 },
+  // { x: (canvas.width / 2) / TAMANIO_CELDA - (canvas.width / 2) / TAMANIO_CELDA, y: (canvas.height / 2) / TAMANIO_CELDA - 3 },
+  // { x: (canvas.width / 2) / TAMANIO_CELDA - (canvas.width / 2) / TAMANIO_CELDA, y: (canvas.height / 2) / TAMANIO_CELDA - 2 },
+  // { x: (canvas.width / 2) / TAMANIO_CELDA - (canvas.width / 2) / TAMANIO_CELDA, y: (canvas.height / 2) / TAMANIO_CELDA - 1 },
 
+  { x: (canvas.width / 2) / TAMANIO_CELDA, y: (canvas.height / 2) / TAMANIO_CELDA - 5 },
+  { x: (canvas.width / 2) / TAMANIO_CELDA, y: (canvas.height / 2) / TAMANIO_CELDA - 4 },
+  { x: (canvas.width / 2) / TAMANIO_CELDA, y: (canvas.height / 2) / TAMANIO_CELDA - 3 },
+  { x: (canvas.width / 2) / TAMANIO_CELDA, y: (canvas.height / 2) / TAMANIO_CELDA - 2 },
+  { x: (canvas.width / 2) / TAMANIO_CELDA, y: (canvas.height / 2) / TAMANIO_CELDA - 1 },
+];
 
 
 // Primera pintura del juego al cargar la página
@@ -19,20 +37,22 @@ function limpiarCanvas() {
 
 function dibujarTodo() {
   limpiarCanvas();
-  //dibujarTablero();
   dibujarTablero2();
-  pintarParte(5, 1);
-  pintarParte(0, 3);
-  pintarParte(5, 5);
-  pintarParte(10, 2);
-  //Pintar un cuadrado pegado al borde inferior del canvas.
-  pintarParte((canvas.width - TAMANIO_CELDA) / TAMANIO_CELDA, (canvas.height - TAMANIO_CELDA) / TAMANIO_CELDA);
-  //Pintar un cuadrado pegado al borde derecho del canvas.
-  pintarParte((canvas.height - TAMANIO_CELDA) / TAMANIO_CELDA, (canvas.width / 2) / TAMANIO_CELDA);
-  //Pintar un cuadrado pegado al borde izquierdo del canvas.
-  pintarParte((canvas.height / 2) / TAMANIO_CELDA - (canvas.height / 2) / TAMANIO_CELDA, (canvas.width / 2) / TAMANIO_CELDA);
-  //Pintar un cuadrado en cualquier esquina del canvas.
-  pintarParte(canvas.width - canvas.width, (canvas.height - TAMANIO_CELDA) / TAMANIO_CELDA);
+  pintarSerpiente();
+
+  //dibujarTablero();
+  // pintarParte(5, 1);
+  // pintarParte(0, 3);
+  // pintarParte(5, 5);
+  // pintarParte(10, 2);
+  // //Pintar un cuadrado pegado al borde inferior del canvas.
+  // pintarParte((canvas.width - TAMANIO_CELDA) / TAMANIO_CELDA, (canvas.height - TAMANIO_CELDA) / TAMANIO_CELDA);
+  // //Pintar un cuadrado pegado al borde derecho del canvas.
+  // pintarParte((canvas.height - TAMANIO_CELDA) / TAMANIO_CELDA, (canvas.width / 2) / TAMANIO_CELDA);
+  // //Pintar un cuadrado pegado al borde izquierdo del canvas.
+  // pintarParte((canvas.height / 2) / TAMANIO_CELDA - (canvas.height / 2) / TAMANIO_CELDA, (canvas.width / 2) / TAMANIO_CELDA);
+  // //Pintar un cuadrado en cualquier esquina del canvas.
+  // pintarParte(canvas.width - canvas.width, (canvas.height - TAMANIO_CELDA) / TAMANIO_CELDA);
 }
 
 function dibujarTablero() {
@@ -85,10 +105,21 @@ function dibujarTablero2() {
 function pintarParte(lineaX, lineaY) {
   let valorX = lineaX * TAMANIO_CELDA;
   let valorY = lineaY * TAMANIO_CELDA;
-  ctx.fillStyle = "red";
+  //ctx.fillStyle = "red";
   ctx.fillRect(valorX, valorY, TAMANIO_CELDA, TAMANIO_CELDA);
   ctx.strokeStyle = "yellow";
   ctx.strokeRect(valorX, valorY, TAMANIO_CELDA, TAMANIO_CELDA);
 }
 
-
+function pintarSerpiente() {
+  let serpiente;
+  for (i = 0; i < SERPIENTE.length; i++) {
+    serpiente = SERPIENTE[i];
+    if (i === 0) {
+      ctx.fillStyle = "yellow";
+    } else {
+      ctx.fillStyle = "red";
+    }
+    pintarParte(serpiente.x, serpiente.y);
+  }
+}
