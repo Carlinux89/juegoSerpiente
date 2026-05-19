@@ -3,8 +3,9 @@
 const canvas = document.getElementById("canvasJuego");
 const ctx = canvas.getContext("2d");
 let intervaloSerpiente;
-let direccionActual;
+let direccionActual = "derecha";
 let puntaje = 0;
+let juegoActivo = true;
 const TAMANIO_CELDA = 25;
 //CREACIÓN DE LA SERPIENTE
 const SERPIENTE = [
@@ -174,6 +175,23 @@ function moverAbajo() {
 }
 
 function cambiarDireccion(nuevaDireccion) {
+
+  if (direccionActual === "derecha" && nuevaDireccion === "izquierda") {
+    return;
+  }
+
+  if (direccionActual === "izquierda" && nuevaDireccion === "derecha") {
+    return;
+  }
+
+  if (direccionActual === "arriba" && nuevaDireccion === "abajo") {
+    return;
+  }
+
+  if (direccionActual === "abajo" && nuevaDireccion === "arriba") {
+    return;
+  }
+
   direccionActual = nuevaDireccion;
 }
 
@@ -186,6 +204,9 @@ function pausarJuego() {
 }
 
 function moverSerpiente() {
+  if (!juegoActivo) {
+    return;
+  }
   let cola = SERPIENTE[SERPIENTE.length - 1]
   if (direccionActual === "derecha") {
     moverDerecha();
@@ -202,6 +223,7 @@ function moverSerpiente() {
     SERPIENTE.push(cola);
     generarComida();
   }
+  colisionBordes();
   dibujarTodo();
 }
 
@@ -213,8 +235,8 @@ function generarComida() {
 }
 
 function pintarComida() {
-  let totalColumnas = canvas.width - TAMANIO_CELDA / TAMANIO_CELDA;
-  let totalFilas = canvas.height - TAMANIO_CELDA / TAMANIO_CELDA;
+  let totalColumnas = canvas.width / TAMANIO_CELDA;
+  let totalFilas = canvas.height / TAMANIO_CELDA;
   ctx.fillStyle = "blue"
   pintarParte(comida.comidaX, comida.comidaY);
 }
@@ -226,3 +248,19 @@ function atraparComida() {
   }
   return false;
 }
+
+function colisionBordes() {
+  let colisionCabeza = SERPIENTE[0];
+  let totalColumnas = canvas.width / TAMANIO_CELDA;
+  let totalFilas = canvas.height / TAMANIO_CELDA;
+  if (colisionCabeza.x < 0 ||
+    colisionCabeza.x >= totalColumnas ||
+    colisionCabeza.y < 0 ||
+    colisionCabeza.y >= totalFilas
+  ) {
+    document.getElementById("estado").innerText = "GAME OVER";
+    juegoActivo = false;
+    return;
+  }
+}
+
